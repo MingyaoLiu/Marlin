@@ -1568,7 +1568,7 @@
 // The height can be set with M420 Z<height>
 #define ENABLE_LEVELING_FADE_HEIGHT
 #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
-#define DEFAULT_LEVELING_FADE_HEIGHT 10.0 // (mm) Default fade height.
+#define DEFAULT_LEVELING_FADE_HEIGHT 5.0 // Ming Change from default 10mm to 5mm. (mm) Default fade height.
 #endif
 
 // For Cartesian machines, instead of dividing moves on mesh boundaries,
@@ -1629,7 +1629,7 @@
 //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
 #define MESH_INSET 5         // Ming    // Set Mesh bounds as an inset region of the bed
-#define GRID_MAX_POINTS_X 12 // Ming // Don't use more than 15 points per axis, implementation limited.
+#define GRID_MAX_POINTS_X 15 // Ming // Don't use more than 15 points per axis, implementation limited.
 #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 //#define UBL_HILBERT_CURVE       // Use Hilbert distribution for less travel when probing multiple points
