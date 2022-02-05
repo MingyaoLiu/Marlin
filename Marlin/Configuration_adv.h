@@ -483,7 +483,7 @@
  * Hotend Idle Timeout
  * Prevent filament in the nozzle from charring and causing a critical jam.
  */
-//#define HOTEND_IDLE_TIMEOUT
+#define HOTEND_IDLE_TIMEOUT  // Ming
 #if ENABLED(HOTEND_IDLE_TIMEOUT)
   #define HOTEND_IDLE_TIMEOUT_SEC (5*60)    // (seconds) Time without extruder movement to trigger protection
   #define HOTEND_IDLE_MIN_TRIGGER   180     // (°C) Minimum temperature to enable hotend protection
@@ -520,7 +520,7 @@
   // Use TEMP_SENSOR_BOARD as a trigger for enabling the controller fan
   //#define CONTROLLER_FAN_MIN_BOARD_TEMP 40  // (°C) Turn on the fan if the board reaches this temperature
 
-  //#define CONTROLLER_FAN_EDITABLE         // Enable M710 configurable settings
+  #define CONTROLLER_FAN_EDITABLE         // Ming // Enable M710 configurable settings
   #if ENABLED(CONTROLLER_FAN_EDITABLE)
     #define CONTROLLER_FAN_MENU             // Enable the Controller Fan submenu
   #endif
@@ -606,7 +606,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN -1
+#define E0_AUTO_FAN_PIN FAN1_PIN    // Ming
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -1349,7 +1349,7 @@
 
   // Show the E position (filament used) during printing
   //#define LCD_SHOW_E_TOTAL
-
+  
   /**
    * LED Control Menu
    * Add LED Control to the LCD menu
@@ -1525,7 +1525,7 @@
   //#define LONG_FILENAME_HOST_SUPPORT    // Get the long filename of a file/folder with 'M33 <dosname>' and list long filenames with 'M20 L'
   //#define LONG_FILENAME_WRITE_SUPPORT   // Create / delete files with long filenames via M28, M30, and Binary Transfer Protocol
 
-  //#define SCROLL_LONG_FILENAMES         // Scroll long filenames in the SD card menu
+  #define SCROLL_LONG_FILENAMES         // Ming // Scroll long filenames in the SD card menu
 
   //#define SD_ABORT_NO_COOLDOWN          // Leave the heaters on after Stop Print (not recommended!)
 
@@ -1538,7 +1538,7 @@
 
   //#define SD_REPRINT_LAST_SELECTED_FILE // On print completion open the LCD Menu and select the same file
 
-  //#define AUTO_REPORT_SD_STATUS         // Auto-report media status with 'M27 S<seconds>'
+  #define AUTO_REPORT_SD_STATUS      // Ming   // Auto-report media status with 'M27 S<seconds>'
 
   /**
    * Support for USB thumb drives using an Arduino USB Host Shield or
@@ -1595,7 +1595,6 @@
     #define SD_FIRMWARE_UPDATE_ACTIVE_VALUE   0xF0
     #define SD_FIRMWARE_UPDATE_INACTIVE_VALUE 0xFF
   #endif
-
   /**
    * Enable this option if you have more than ~3K of unused flash space.
    * Marlin will embed all settings in the firmware binary as compressed data.
@@ -1621,7 +1620,7 @@
    *
    * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
    */
-  //#define SDCARD_CONNECTION LCD
+  #define SDCARD_CONNECTION ONBOARD   // Ming
 
   // Enable if SD detect is rendered useless (e.g., by using an SD extender)
   //#define NO_SD_DETECT
@@ -1937,7 +1936,7 @@
  *
  * Warning: Does not respect endstops!
  */
-//#define BABYSTEPPING
+#define BABYSTEPPING   // Ming TODO: TESTING THIS
 #if ENABLED(BABYSTEPPING)
   //#define INTEGRATED_BABYSTEPPING         // EXPERIMENTAL integration of babystepping into the Stepper ISR
   //#define BABYSTEP_WITHOUT_HOMING
@@ -2335,7 +2334,7 @@
 #define SERIAL_OVERRUN_PROTECTION
 
 // For serial echo, the number of digits after the decimal point
-//#define SERIAL_FLOAT_PRECISION 4
+#define SERIAL_FLOAT_PRECISION 4  // Ming
 
 // @section extras
 
@@ -2678,11 +2677,25 @@
    */
   #define INTERPOLATE      true
 
+  /**
+   * @brief Look into TMC2226 Datasheet
+   * X Y are same.
+   * For SERIES motor connection :
+   * I'm using 150m rsense, 1.35A RMS current, for 1.5A motor (HT23-397 Series 1.41A/phase)
+   * Calculate vref = 1.15 / sqrt(2) * sqrt(2) * 2.5 * (180 + 20) / 325 = 1.76923076923
+   * 
+   * 
+   * for PARALLEL motor connection :
+   * I'm using 120m rsense, 1.64A RMS current, for 1.7A motor (HT23-397 Parallel 2.83A/phase)
+   * Calculate vref = 1.64 / sqrt(2) * sqrt(2) * 2.5 * (120 + 20) / 325 = 1.76615384615
+   * 
+   */
+
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       1150        // Ming // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
-    #define X_MICROSTEPS     16        // 0..256
-    #define X_RSENSE          0.11
+    #define X_MICROSTEPS     128        // Ming // 0..256
+    #define X_RSENSE          0.18     // Ming 
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -2699,10 +2712,10 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       800
+    #define Y_CURRENT       1150
     #define Y_CURRENT_HOME  Y_CURRENT
-    #define Y_MICROSTEPS     16
-    #define Y_RSENSE          0.11
+    #define Y_MICROSTEPS     128
+    #define Y_RSENSE          0.18
     #define Y_CHAIN_POS      -1
     //#define Y_INTERPOLATE  true
     //#define Y_HOLD_MULTIPLIER 0.5
@@ -2718,11 +2731,18 @@
     //#define Y2_HOLD_MULTIPLIER 0.5
   #endif
 
+  /**
+   * TODO: DONOT USE THIS SETTING FOR Z, TRY SAME AS XY FOR NOW
+   * @brief Look into TMC2226 Datasheet
+   * Z is dual motor, may need to bump up the amp. 
+   * 
+   */
+
   #if AXIS_IS_TMC(Z)
-    #define Z_CURRENT       800
+    #define Z_CURRENT       1150
     #define Z_CURRENT_HOME  Z_CURRENT
-    #define Z_MICROSTEPS     16
-    #define Z_RSENSE          0.11
+    #define Z_MICROSTEPS     128
+    #define Z_RSENSE          0.18
     #define Z_CHAIN_POS      -1
     //#define Z_INTERPOLATE  true
     //#define Z_HOLD_MULTIPLIER 0.5
@@ -2788,13 +2808,20 @@
     //#define K_HOLD_MULTIPLIER 0.5
   #endif
 
+
+  /**
+   * @brief Look into TMC2226 Datasheet
+   * E is different Motor
+   * I'm using 220m rsense, 0.96A RMS current
+   * Calculate vref = 0.96 / sqrt(2) * sqrt(2) * 2.5 * (220 + 20) / 325
+   */
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      800
-    #define E0_MICROSTEPS    16
-    #define E0_RSENSE         0.11
+    #define E0_CURRENT      960
+    #define E0_MICROSTEPS    128
+    #define E0_RSENSE         0.22
     #define E0_CHAIN_POS     -1
     //#define E0_INTERPOLATE true
-    //#define E0_HOLD_MULTIPLIER 0.5
+  //#define E0_HOLD_MULTIPLIER 0.5
   #endif
 
   #if AXIS_IS_TMC(E1)
@@ -2961,7 +2988,7 @@
    * Define your own with:
    * { <off_time[1..15]>, <hysteresis_end[-3..12]>, hysteresis_start[1..8] }
    */
-  #define CHOPPER_TIMING CHOPPER_DEFAULT_12V        // All axes (override below)
+  #define CHOPPER_TIMING CHOPPER_DEFAULT_12V        // Ming // All axes (override below)
   //#define CHOPPER_TIMING_X  CHOPPER_TIMING        // For X Axes (override below)
   //#define CHOPPER_TIMING_X2 CHOPPER_TIMING_X
   //#define CHOPPER_TIMING_Y  CHOPPER_TIMING        // For Y Axes (override below)
@@ -2993,7 +3020,7 @@
    * M912 - Clear stepper driver overtemperature pre-warn condition flag.
    * M122 - Report driver parameters (Requires TMC_DEBUG)
    */
-  //#define MONITOR_DRIVER_STATUS
+  #define MONITOR_DRIVER_STATUS // Ming
 
   #if ENABLED(MONITOR_DRIVER_STATUS)
     #define CURRENT_STEP_DOWN     50  // [mA]
@@ -3008,13 +3035,13 @@
    * STEALTHCHOP_(XY|Z|E) must be enabled to use HYBRID_THRESHOLD.
    * M913 X/Y/Z/E to live tune the setting
    */
-  //#define HYBRID_THRESHOLD
+  #define HYBRID_THRESHOLD       // Ming
 
   #define X_HYBRID_THRESHOLD     100  // [mm/s]
   #define X2_HYBRID_THRESHOLD    100
   #define Y_HYBRID_THRESHOLD     100
   #define Y2_HYBRID_THRESHOLD    100
-  #define Z_HYBRID_THRESHOLD       3
+  #define Z_HYBRID_THRESHOLD      15  // Ming
   #define Z2_HYBRID_THRESHOLD      3
   #define Z3_HYBRID_THRESHOLD      3
   #define Z4_HYBRID_THRESHOLD      3
@@ -3719,7 +3746,7 @@
 /**
  * Auto-report position with M154 S<seconds>
  */
-//#define AUTO_REPORT_POSITION
+#define AUTO_REPORT_POSITION  //Ming
 
 /**
  * Include capabilities in M115 output
@@ -3774,11 +3801,11 @@
 //#define NO_WORKSPACE_OFFSETS
 
 // Extra options for the M114 "Current Position" report
-//#define M114_DETAIL         // Use 'M114` for details to check planner calculations
+#define M114_DETAIL         // Ming // Use 'M114` for details to check planner calculations
 //#define M114_REALTIME       // Real current position based on forward kinematics
 //#define M114_LEGACY         // M114 used to synchronize on every call. Enable if needed.
 
-//#define REPORT_FAN_CHANGE   // Report the new fan speed when changed by M106 (and others)
+#define REPORT_FAN_CHANGE   // Ming // Report the new fan speed when changed by M106 (and others)
 
 /**
  * Set the number of proportional font spaces required to fill up a typical character space.
@@ -3950,7 +3977,7 @@
  * Host Prompt Support enables Marlin to use the host for user prompts so
  * filament runout and other processes can be managed from the host side.
  */
-//#define HOST_ACTION_COMMANDS
+#define HOST_ACTION_COMMANDS   //Ming
 #if ENABLED(HOST_ACTION_COMMANDS)
   //#define HOST_PAUSE_M76
   //#define HOST_PROMPT_SUPPORT
