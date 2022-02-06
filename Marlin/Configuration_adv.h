@@ -1538,7 +1538,7 @@
 
   //#define SD_REPRINT_LAST_SELECTED_FILE // On print completion open the LCD Menu and select the same file
 
-  #define AUTO_REPORT_SD_STATUS      // Ming   // Auto-report media status with 'M27 S<seconds>'
+  //#define AUTO_REPORT_SD_STATUS      // Ming   // Auto-report media status with 'M27 S<seconds>'
 
   /**
    * Support for USB thumb drives using an Arduino USB Host Shield or
@@ -2679,23 +2679,25 @@
 
   /**
    * @brief Look into TMC2226 Datasheet
+   * RSENSE RESISTOR UNDER THE 2226 BIGTREE DRIVER IS 150 Ohm
    * X Y are same.
-   * For SERIES motor connection :
-   * I'm using 150m rsense, 1.35A RMS current, for 1.5A motor (HT23-397 Series 1.41A/phase)
-   * Calculate vref = 1.15 / sqrt(2) * sqrt(2) * 2.5 * (180 + 20) / 325 = 1.76923076923
+   * For SERIES motor connection :  (HT23-397 Serial 1.41A/phase)
+   * Calculate vref = 1.15 / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = xxxx
    * 
    * 
-   * for PARALLEL motor connection :
-   * I'm using 120m rsense, 1.64A RMS current, for 1.7A motor (HT23-397 Parallel 2.83A/phase)
-   * Calculate vref = 1.64 / sqrt(2) * sqrt(2) * 2.5 * (120 + 20) / 325 = 1.76615384615
+   * for PARALLEL motor connection :  (HT23-397 Parallel 2.83A/phase)
+   * 
+   * Calculate vref = sqrt(2) / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = 1.84935619695
+   * 
+   * Calculate vref = 1.8 / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = xxxx
    * 
    */
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       1150        // Ming // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       1414        // Ming // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     128        // Ming // 0..256
-    #define X_RSENSE          0.18     // Ming 
+    #define X_RSENSE          0.15     // Ming 
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -2712,10 +2714,10 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       1150
+    #define Y_CURRENT       1414
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     128
-    #define Y_RSENSE          0.18
+    #define Y_RSENSE          0.15
     #define Y_CHAIN_POS      -1
     //#define Y_INTERPOLATE  true
     //#define Y_HOLD_MULTIPLIER 0.5
@@ -2739,10 +2741,10 @@
    */
 
   #if AXIS_IS_TMC(Z)
-    #define Z_CURRENT       1150
+    #define Z_CURRENT       1414
     #define Z_CURRENT_HOME  Z_CURRENT
     #define Z_MICROSTEPS     128
-    #define Z_RSENSE          0.18
+    #define Z_RSENSE          0.15
     #define Z_CHAIN_POS      -1
     //#define Z_INTERPOLATE  true
     //#define Z_HOLD_MULTIPLIER 0.5
@@ -2812,13 +2814,12 @@
   /**
    * @brief Look into TMC2226 Datasheet
    * E is different Motor
-   * I'm using 220m rsense, 0.96A RMS current
-   * Calculate vref = 0.96 / sqrt(2) * sqrt(2) * 2.5 * (220 + 20) / 325
+   * Calculate vref = 0.96 / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = 1.25538461538
    */
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      960
     #define E0_MICROSTEPS    128
-    #define E0_RSENSE         0.22
+    #define E0_RSENSE         0.15
     #define E0_CHAIN_POS     -1
     //#define E0_INTERPOLATE true
   //#define E0_HOLD_MULTIPLIER 0.5
@@ -3123,7 +3124,7 @@
    * Enable M122 debugging command for TMC stepper drivers.
    * M122 S0/1 will enable continuous reporting.
    */
-  //#define TMC_DEBUG
+  #define TMC_DEBUG    // Ming
 
   /**
    * You can set your own advanced settings by filling in predefined functions.
