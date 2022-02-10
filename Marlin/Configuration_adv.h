@@ -2691,13 +2691,19 @@
    * 
    * Calculate vref = 1.8 / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = xxxx
    * 
+   * TMC2209:
+   * Calculate vref = 1.2 / sqrt(2) * sqrt(2) * 2.5 * (110 + 20) / 325 = xxxx
+   * 
+   * 
    */
 
+  // CHECK STEPPER MOTOR DRIVER TYPE
+  // X: TMC 2209
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       1414        // Ming // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       1200        // Ming // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     128        // Ming // 0..256
-    #define X_RSENSE          0.15     // Ming 
+    #define X_RSENSE          0.11     // Ming 
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -2713,6 +2719,7 @@
     //#define X2_HOLD_MULTIPLIER 0.5
   #endif
 
+  // Y: TMC 2226
   #if AXIS_IS_TMC(Y)
     #define Y_CURRENT       1414
     #define Y_CURRENT_HOME  Y_CURRENT
@@ -2740,6 +2747,7 @@
    * 
    */
 
+  // Z: TMC 2226
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT       1414
     #define Z_CURRENT_HOME  Z_CURRENT
@@ -2815,11 +2823,16 @@
    * @brief Look into TMC2226 Datasheet
    * E is different Motor
    * Calculate vref = 0.96 / sqrt(2) * sqrt(2) * 2.5 * (150 + 20) / 325 = 1.25538461538
+   * 
+   * TMC2209
+   * Calculate vref = 0.96 / sqrt(2) * sqrt(2) * 2.5 * (110 + 20) / 325 = 0.96
    */
+
+  // E0 TMC 2209
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      960
     #define E0_MICROSTEPS    128
-    #define E0_RSENSE         0.15
+    #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
     //#define E0_INTERPOLATE true
   //#define E0_HOLD_MULTIPLIER 0.5
@@ -3747,7 +3760,7 @@
 /**
  * Auto-report position with M154 S<seconds>
  */
-#define AUTO_REPORT_POSITION  //Ming
+// #define AUTO_REPORT_POSITION  //Ming too many information?
 
 /**
  * Include capabilities in M115 output
@@ -4335,7 +4348,7 @@
 //#define PINS_DEBUGGING
 
 // Enable Marlin dev mode which adds some special commands
-//#define MARLIN_DEV_MODE
+#define MARLIN_DEV_MODE    // Ming test BLTouch
 
 #if ENABLED(MARLIN_DEV_MODE)
   /**
