@@ -609,9 +609,12 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp  22.20
-    #define DEFAULT_Ki   1.08
-    #define DEFAULT_Kd 114.00
+    // #define DEFAULT_Kp 70.0050    // Ming 1
+    // #define DEFAULT_Ki 10.2949    // Ming 1
+    // #define DEFAULT_Kd 119.0085    // Ming 1
+    #define DEFAULT_Kp  22.20    // Default
+    #define DEFAULT_Ki   1.08    // Default
+    #define DEFAULT_Kd 114.00    // Default
   #endif
 #endif // PIDTEMP
 
@@ -943,7 +946,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT  { 600, 600, 800, 418.5 } // Ming 
+#define DEFAULT_AXIS_STEPS_PER_UNIT  { 640, 640, 3200, 3348 } // Ming 
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1049,7 +1052,7 @@
 // #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN    // Ming disable for bltouch
 
 // Force the use of the probe for Z-axis homing
-//#define USE_PROBE_FOR_Z_HOMING
+#define USE_PROBE_FOR_Z_HOMING    // Ming
 
 /**
  * Z_MIN_PROBE_PIN
@@ -1066,7 +1069,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-//#define Z_MIN_PROBE_PIN 32 // Pin 32 is the RAMPS default
+// #define Z_MIN_PROBE_PIN PE4 // Ming disable this as PE4 is set in skr pin config. Pin 32 is the RAMPS default
 
 /**
  * Probe Type
@@ -1206,7 +1209,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 5, 35, -2.4 } // Ming
+#define NOZZLE_TO_PROBE_OFFSET { 5, 35, -2.3 } // Ming
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -2209,7 +2212,7 @@
 // Add individual axis homing items (Home X, Home Y, and Home Z) to the LCD menu.
 //
 //#define INDIVIDUAL_AXIS_HOMING_MENU
-//#define INDIVIDUAL_AXIS_HOMING_SUBMENU
+#define INDIVIDUAL_AXIS_HOMING_SUBMENU    // Ming
 
 //
 // SPEAKER/BUZZER
